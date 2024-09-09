@@ -8,11 +8,11 @@ import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
-@FeignClient("ProjetoTp2")
+@FeignClient("PROJETO-SERVICE")
 public interface ProjectClient {
     @GetMapping("/project/{id}")
     Optional<ProjectDTO> getProjectById(@PathVariable Long id);
 
-    @GetMapping("/project")
+    @GetMapping("/project/")
     List<ProjectDTO> getProjects();
 }

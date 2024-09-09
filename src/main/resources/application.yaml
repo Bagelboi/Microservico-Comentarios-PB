@@ -1,0 +1,51 @@
+app:
+  myport: ${PORT:0}
+server:
+  port: ${app.myport}
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: senha
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+  application:
+    name: comments
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          max-attempts: 2
+          initial-interval: 5000
+          multiplier: 2.0
+          enabled: true
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+
+
+#spring.application.name=comments
+#spring.datasource.url= jdbc:h2:mem:commentdb
+#spring.datasource.driver-class-name=org.h2.Driver
+#spring.datasource.username=sa
+#spring.datasource.password=senha
+#spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+#spring.h2.console.enabled=false
+#spring.h2.console.path=/h2-console
+#spring.jpa.show_sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+#spring.jpa.defer-datasource-initialization=true
+#spring.sql.init.data-locations=classpath:data.sql
+
+#eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+#server.port=8081
