@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -21,6 +22,11 @@ public class CommentController {
     public ResponseEntity<Secao> getSecao(@PathVariable Long secao_id) {
         Optional<Secao> secao = commentService.getSecao(secao_id);
         return secao.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/secoes/")
+    public List<Secao> getSecaos() {
+        return commentService.getAll();
     }
 
     @GetMapping("/secoes/por_proj/{projeto_id}")

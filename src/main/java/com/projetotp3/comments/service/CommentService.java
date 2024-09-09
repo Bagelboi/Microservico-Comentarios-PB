@@ -29,6 +29,8 @@ public class CommentService {
         return secaoRepository.findById(id);
     }
 
+    public List<Secao> getAll() { return secaoRepository.findAll();}
+
     public Optional<Secao> getSecaoPorProjetoID(Long project_id) {
         for (Secao secao : secaoRepository.findAll()) {
             if (secao.getId_projeto() == project_id)
