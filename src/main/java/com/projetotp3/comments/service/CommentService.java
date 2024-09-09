@@ -6,6 +6,7 @@ import com.projetotp3.comments.model.Comentario;
 import com.projetotp3.comments.model.Secao;
 import com.projetotp3.comments.repo.ComentarioRepository;
 import com.projetotp3.comments.repo.SecaoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.cache.internal.TimestampsCacheEnabledImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CommentService {
     @Autowired
     ComentarioRepository comentarioRepository;
@@ -41,6 +43,7 @@ public class CommentService {
 
     public Optional<Secao> saveSecao(Secao secao) {
         if ( getSecaoPorProjetoID(secao.getId_projeto()).isPresent() || projectClient.getProjectById(secao.getId_projeto()).isPresent() ) {
+            log.info("secao criada para projeto:{}", secao.getId_projeto());
             return Optional.of(secaoRepository.save(secao));
         }
         return Optional.empty();
@@ -49,6 +52,7 @@ public class CommentService {
     public boolean deletarSecao(Long id) {
         Optional<Secao> secao = getSecao(id);
         if (secao.isPresent()) {
+            log.info("secao apagada de projeto:{}", secao.get().getId_projeto());
             secaoRepository.deleteById(id);
             return true;
         }
@@ -68,6 +72,7 @@ public class CommentService {
     public boolean deletarComentario(Long id) {
         Optional<Comentario> comentario = getComentario(id);
         if (comentario.isPresent()) {
+            log.info("comentario apagado em:{}", comentario.get().getSecao().getId_projeto());
             comentarioRepository.deleteById(id);
             return true;
         }
@@ -80,6 +85,7 @@ public class CommentService {
             if (conteudo.length() > 1) {
                 Comentario comentario_up = comentario.get();
                 comentario_up.setConteudo(conteudo);
+                log.info("comentario editado:{}", id.toString() + ", " + comentario.get().getConteudo() + "->" + conteudo);
                 saveComentario(comentario_up);
             } else
                 deletarComentario(id);
@@ -95,6 +101,7 @@ public class CommentService {
         if (secao.isPresent()) {
             comentario.setSecao(secao.get());
             comentario.setDate(new Timestamp(System.currentTimeMillis()));
+            log.info("comentario postado em:{}", comentario.getSecao().getId_projeto());
             saveComentario(comentario);
             return true;
         }
