@@ -27,6 +27,7 @@ public class ProjectConsumer {
             ProjectDTO project = objectMapper.readValue(json, ProjectDTO.class);
             Secao sec = new Secao();
             sec.setId_projeto(project.id());
+            sec.setId(project.id());
             log.info("comentarios criados:{}", commentService.saveSecao(sec).get().getId_projeto());
         }catch (Exception e){
             log.error(e.getMessage());
