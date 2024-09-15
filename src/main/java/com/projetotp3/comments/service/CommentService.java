@@ -35,16 +35,16 @@ public class CommentService {
 
     public Optional<Secao> getSecaoPorProjetoID(Long project_id) {
         for (Secao secao : secaoRepository.findAll()) {
-            if (secao.getId_projeto() == project_id)
+            if (secao.getId_projeto().equals(project_id))
                 return Optional.of(secao);
         }
         return Optional.empty();
     }
 
     public Optional<Secao> saveSecao(Secao secao) {
-        if ( getSecaoPorProjetoID(secao.getId_projeto()).isPresent() || projectClient.getProjectById(secao.getId_projeto()).isPresent() ) {
+        if (projectClient.getProjectById(secao.getId_projeto()).isPresent() && getSecaoPorProjetoID(secao.getId_projeto()).isEmpty()) {
             log.info("secao criada para projeto:{}", secao.getId_projeto());
-            return Optional.of(secaoRepository.save(secao));
+            return Optional.of( secaoRepository.save(secao) );
         }
         return Optional.empty();
     }
